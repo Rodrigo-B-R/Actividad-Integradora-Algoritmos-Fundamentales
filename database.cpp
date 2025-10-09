@@ -7,7 +7,7 @@ int LoadData(string file_name, int arr[], int &size);
 int Date2Int(const string& date);
 void mergeSort(int arr[], int left, int right);
 void merge(int arr[], int left, int mid, int right);
-int loadData2File(int* arr);
+int loadData2File(int arr[], int size,string filename);
 
 
 
@@ -33,6 +33,11 @@ int main() {
 
     for (int i = 0; i < 10 && i < size; i++)
         cout << arr[i] << endl;
+    
+    if(loadData2File(arr,size,"bitacora_ordenada.txt") ==1){
+        cout<<"Succesful"<<endl;
+    }
+    else{ cout<<"Failed loading the data"<<endl;}
 
     
 
@@ -148,7 +153,30 @@ void mergeSort(int arr[], int left, int right){
 }
 
 
-int loadData2File(int* arr){
+int loadData2File(int arr[], int size,string file_name){
+   
+    ofstream outFile(file_name);
+
+    if (!outFile.is_open()) {
+        cerr << "Error al abrir el archivo " << file_name << " para escritura." << endl;
+        return 0;
+    }
+
+    for (int line=0; line< size; line++){
+        
+        outFile << arr[line];
+        if (line < size - 1)  // evita salto extra al final
+            outFile << "\n";
+       
+
+
+    }
+
+    outFile.close();
+
+    return 1;
+
+
     
 
 
