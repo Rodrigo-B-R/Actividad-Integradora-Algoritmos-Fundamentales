@@ -69,23 +69,31 @@ int Date2Int(const string& date) {
     string meses[12] = {"Jan","Feb","Mar","Apr","May","Jun",
                         "Jul","Aug","Sep","Oct","Nov","Dec"};
     
+    // --- Mes ---
     string mesStr = date.substr(0,3);  
 
-    int posDia= 3;
-    while (posDia < date.size() && date[posDia] == ' '){ posDia++;} 
+    // --- Día ---
+    int posDia = 3;
+    while (posDia < date.size() && date[posDia] == ' ') posDia++; 
     string dia = "";
     while (posDia < date.size() && isdigit(date[posDia])) {
         dia += date[posDia];
         posDia++;
     }
 
-    // Rellenar día con cero si tiene un dígito
     if (dia.size() == 1) dia = "0" + dia;
 
-    // Extraer la hora (últimos 8 caracteres)
-    string hora = date.substr(date.size() - 8, 8);  // "HH:MM:SS"
+    // --- Saltar espacios antes de la hora ---
+    while (posDia < date.size() && date[posDia] == ' ') posDia++;
 
-    // Convertir mes a número
+    // --- Hora ---
+    string hora = "";
+    while (posDia < date.size() && (isdigit(date[posDia]) || date[posDia] == ':')) {
+        hora += date[posDia];
+        posDia++;
+    }
+
+    // --- Convertir mes ---
     string mesNum;
     for (int i = 0; i < 12; i++) {
         if (meses[i] == mesStr) {
@@ -94,12 +102,12 @@ int Date2Int(const string& date) {
         }
     }
 
-    
+    // --- Limpiar hora ---
     string horaNum = "";
     for (char c : hora)
-        if (c != ':') horaNum += c;
+        if (isdigit(c)) horaNum += c;
 
-    
+    // --- Combinar ---
     string fechaNumStr = mesNum + dia + horaNum;
 
     int fechaNum = stoi(fechaNumStr);
@@ -108,6 +116,7 @@ int Date2Int(const string& date) {
 
     return fechaNum;
 }
+
 
 
 
